@@ -1,0 +1,60 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+   zone: "{{zone}}"
+   zone_names: "{{zone_names}}"
+   zone_address: "{{zone_address}}"
+   allow_query_from: "{{allow_query_from}}"
+   name_server: "{{name_server}}"
+   net_server: "{{net_server}}"
+   networks: "{{networks}}"
+  # my_container:
+  #  - con1
+  #  - con2
+   #veth_pair: "{{veth_names}}"
+ #  veth_pair:
+  #  - vth1
+  #  - vth2
+#   net1_servers: "{{net1_servers}}"
+#        - { hostname: www.csc, ip: 192.168.10.55 }
+#        - { hostname: www.ece, ip: 192.168.10.44 }
+
+  tasks:
+   - name: zone
+     debug:
+       msg: "{{zone}}"
+
+   - name: Zone Names list
+     debug:
+       msg: "{{item}}"
+     with_items:
+       - "{{zone_names}}"
+   - name: Zone address
+     debug:
+       msg: "{{item}}"
+     with_items:
+       - "{{zone_address}}"
+   - name: Allow query from
+     debug:
+       msg: "{{allow_query_from}}"
+
+   - name: Name server list
+     debug:
+       msg: "{{item}}" 
+     with_items:
+       - "{{name_server}}"
+
+   - name: Networks list
+     debug:
+      # msg: "net {{item.net}} ip {{item.ip}} view {{item.view}} forward_zone {{item.forward_zone}} reverse_zone {{item.reverse_zone}} "
+       msg: "{{item}}"
+     with_items:
+       - "{{networks}}"
+
+   - name: net_server
+     debug:
+       msg: "{{item}}"
+     with_items:
+       - "{{net_server}}"
+
+

@@ -1,0 +1,25 @@
+---
+  - name: Configure DNS using bind
+    hosts: all #prev value-localhost 
+    remote_user: root
+
+    vars:
+      zone: "{{zone}}"
+      zone_names: "{{zone_names}}"
+      zone_address: "{{zone_address}}"     
+      allow_query_from: "{{allow_query_from}}"
+      name_server: "{{name_server}}"
+      recursion: yes
+      net1_servers: "{{net1_servers}}"
+      #net2_servers:
+       # - { hostname: www.csc, ip:192.168.20.4 }
+        #- { hostname: www.csc, ip:192.168.20.6 }
+        #- { hostname: www.ece, ip:192.168.20.5 }
+      networks: "{{networks}}"
+#        - { net: net1, ip: 192.168.10.0/24, view: net1-view, forward_zone: univ.edu-net1.zone, rev_zone: 10.168.192 }
+#- { net: net2, ip:192.168.20.0/24, view: net2-view, forward_zone: univ.edu-net2.zone, rev_zone: 20.168.192.in-addr.arpa }
+
+    tasks:
+
+    - name: Create custom named.conf with desired zone
+      template: src=named.conf dest=/home/snaatta/dns1/named/parent/named.conf

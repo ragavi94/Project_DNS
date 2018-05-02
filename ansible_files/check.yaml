@@ -1,0 +1,10 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+   net_server: "{{net_server}}"
+  tasks:
+   - name: net_server
+     debug:
+       msg: " {{item}} "
+     with_items:
+       - "{{net_server}}"

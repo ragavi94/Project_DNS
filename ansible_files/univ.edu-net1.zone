@@ -1,0 +1,15 @@
+$TTL 3600 
+@ IN SOA {{zone}} root.{{zone}} (4 604800 86400 2419200 604800) 
+		IN	NS	dns1
+		IN	A 	{{zone_address}}
+
+
+{% for item in host_split %}
+
+{{item}}	IN	A	{{ip_split[loop.index0]}}
+
+{% endfor %}
+
+
+
+{{dns}}			IN	A	{{zone_address}}

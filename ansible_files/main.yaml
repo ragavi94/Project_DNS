@@ -1,0 +1,48 @@
+---
+  - name: Configure DNS using bind
+    hosts: localhost  #prev value-localhost 
+#    remote_user: root
+
+    vars:
+      zone: "{{zone}}"
+      zone_names: "{{zone_names}}"
+      zone_address: "{{zone_address}}"     
+      allow_query_from: "{{allow_query_from}}"
+      name_server: "{{name_server}}"
+      recursion: yes
+      net1_servers: "{{net1_servers}}"
+      net: "{{net}}"
+      ip: "{{ip}}"
+      view: "{{view}}"
+      forward_zone: "{{forward_zone}}"
+      rev_zone: "{{rev_zone}}"
+      host_server: "{{host_server}}"
+      host_split: "{{host_server.split(' ')}}"
+      ip_server: "{{ip_server}}"
+      ip_split: "{{ip_server.split(' ')}}"
+      hostipstr: "{{hostipstr}}"
+      hostipstr_split: "{{hostipstr.split(' ')}}"
+      dns_host_ip: "{{dns_host_ip}}"
+      dns: "{{dns}}"      
+      #net2_servers:
+       # - { hostname: www.csc, ip:192.168.20.4 }
+       # - { hostname: www.csc, ip:192.168.20.6 }
+       # - { hostname: www.ece, ip:192.168.20.5 }
+#        - { net: net1, ip: 192.168.10.0/24, view: net1-view, forward_zone: univ.edu-net1.zone, rev_zone: 10.168.192 }
+#- { net: net2, ip:192.168.20.0/24, view: net2-view, forward_zone: univ.edu-net2.zone, rev_zone: 20.168.192.in-addr.arpa }
+
+    tasks:
+
+    - name: Create custom named.conf with desired zone
+      template: src=named.conf dest=/etc/named.conf 
+
+    - name: Copy zone forward files for all zones to /var/named
+      template: src=univ.edu-net1.zone dest="/home/snaatta/{{dns}}/named/{{item}}" 
+      with_items: "{{zone_names}}"
+     
+    - name: Copy zone reverse files for all zones to /var/named
+      template: src=db.10.168.192 dest="/home/snaatta/{{dns}}/named/db.{{rev_zone}}" 
+
+    - name: Disable IPv6 support
+      lineinfile: dest=/etc/named.conf line='OPTIONS="-4"' regexp="^OPTIONS" 
+

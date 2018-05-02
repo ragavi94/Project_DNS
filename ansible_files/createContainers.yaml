@@ -1,0 +1,17 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+   my_container: "{{container_names}}"
+  tasks:
+   - name: Create a new container
+     docker_container:
+       name: "{{item}}"
+       hostname: "{{item}}"
+       image: dns_sysd:latest
+#       state: present
+       privileged: yes
+       tty: yes
+       interactive: yes
+       state: started 
+     with_items:
+       - "{{my_container}}"
